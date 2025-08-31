@@ -133,21 +133,22 @@ return (
         </div>
 
         {file && !isLoading && (
-  <p className="file-name text-white font-bold ... mt-4">
-    Selected: {fileName}
-  </p>
-)}
+          <p className="file-name text-white font-bold ... mt-4">
+            Selected: {fileName}
+          </p>
+        )}
 
-{/* Keep the button and its container always visible */}
-<div className="extract-container mt-4">
-  <div className="flex justify-center items-center">
-    <button onClick={handleExtract} className="extract-button bg-violet-700 text-white text-xl font-bold px-4 py-2 rounded-lg shadow hover:bg-violet-900 justify-center items-center">
-      Extract Text
-    </button>
-  </div>
-</div>
-
-        {/* className="extract-button bg-violet-700 text-white text-xl font-bold px-4 py-2 rounded-lg shadow hover:bg-violet-900 justify-center items-center" */}
+        <div className="extract-container mt-4">
+          <div className="flex justify-center items-center">
+            <button onClick={handleExtract} className="extract-button bg-violet-700 text-white text-xl font-bold px-4 py-2 rounded-lg shadow hover:bg-violet-900 justify-center items-center" disabled={isLoading} >
+              {isLoading ? (
+                <div className="button-loader"></div> 
+                  ) : (
+                  'Extract Text' 
+                )}
+            </button>
+          </div>
+        </div>
 
         {isLoading && <div className="loader mt-4"></div>}
         {error && <div className="error-message mt-4 text-red-500">{error}</div>}
@@ -155,7 +156,7 @@ return (
         {(extractedText || suggestions) && (
           <div ref={resultsRef} className="results-grid mt-6 grid md:grid-cols-2 gap-6 w-full">
               <div className="result-card bg-white/80 p-4 rounded-xl shadow h-80 overflow-y-auto break-words">
-                <h2 className="font-semibold mb-2 text-black text-2xl">
+                <h2 className="font-semibold mb-2 text-black text-2xl text-center">
                   Extracted Text
                 </h2>
                 <pre className="text-content text-black whitespace-pre-wrap">
@@ -164,14 +165,14 @@ return (
               </div>
 
               <div className="result-card bg-white/80 p-4 rounded-xl shadow h-80 overflow-y-auto break-words">
-                <h2 className="font-semibold mb-2 text-black text-2xl">
+                <h2 className="font-semibold mb-2 text-black text-2xl text-center">
                   AI Suggestions
                 </h2>
                 {suggestions ? (
                   <ul className="list-disc list-inside space-y-2 text-black">
                     {suggestions.split('\n').map((line, index) => {
                       if (line.trim() === '') return null;
-                      const formattedLine = line.replace(/^\-\s*/, '').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                      const formattedLine = line.replace(/^-\s*/, '').replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
                       return (
                         <li key={index} className="leading-relaxed" dangerouslySetInnerHTML={{ __html: formattedLine }}/>
                       );
