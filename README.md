@@ -1,4 +1,5 @@
-# 🌐 Social Media Content Analyzer  [🚀Live Demo: https://post-analyzer.netlify.app/]
+# 🌐 Social Media Content Analyzer  
+🚀Live Demo: https://post-analyzer.netlify.app/
 
 This project is a **web application** that extracts text from uploaded **PDF** and **image files**, then uses **AI (Google Gemini API)** to generate actionable suggestions for improving **social media engagement**.  
 
