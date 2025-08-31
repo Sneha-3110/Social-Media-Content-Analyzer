@@ -18,7 +18,7 @@ This project is a **web application** that extracts text from uploaded **PDF** a
 ## 🛠 Tech Stack  
 
 **Frontend:**  
-- ⚡ [Vite](https://vitejs.dev/) + React  
+- ⚡ React + Vite 
 - 📦 Axios  
 - 📂 React-Dropzone  
 
