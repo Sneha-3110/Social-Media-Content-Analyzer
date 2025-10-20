@@ -10,7 +10,13 @@ const app = express();
 const port = process.env.PORT || 5000;
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 const storage = multer.memoryStorage();
@@ -29,10 +35,23 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             const data = await pdf(fileBuffer);
             text = data.text;
         } else if (req.file.mimetype.startsWith('image/')) {
+            // const worker = await createWorker();
+            // const { data } = await worker.recognize(fileBuffer);
+            // text = data.text;
+            // await worker.terminate();
+
+            // const worker = await createWorker({ logger: (m) => console.log('TESSERACT:', m) });
             const worker = await createWorker();
-            const { data } = await worker.recognize(fileBuffer);
-            text = data.text;
-            await worker.terminate();
+            try {
+                // await worker.load();
+                // await worker.loadLanguage('eng');
+                // await worker.initialize('eng');
+                const { data } = await worker.recognize(fileBuffer);
+                text = data?.text || '' ;
+            } finally {
+                await worker.terminate();
+            }
+
         } else {
             return res.status(400).json({ error: 'Unsupported file type. Please upload a PDF or image.' });
         }
@@ -41,7 +60,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
             return res.status(400).json({ error: 'Could not extract text from the document.' });
         }
 
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
         // const prompt = `You are a social media expert. Analyze the following post and provide 3-5 actionable bullet points to improve its engagement. Format your response clearly. Post: "${text}"`;
         const prompt = `You are a social media expert. Analyze the following post and respond in the following format:
         1. **Post Summary:** Briefly summarize in 2-3 sentences what the post is about.
@@ -49,6 +68,7 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         Post: "${text}"`;
 
         const result = await model.generateContent(prompt);
+        console.log('AI generateContent result:', result);
         const response = await result.response;
         const aiSuggest = response.text();
         

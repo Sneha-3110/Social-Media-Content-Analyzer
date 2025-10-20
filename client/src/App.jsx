@@ -54,8 +54,13 @@ const handleExtract = async () => {
     const formData = new FormData();
     formData.append('file', file);
 
+// http://localhost:5000/api/upload
+
     try {
-        const response = await axios.post('http://localhost:5000/api/upload', formData, {
+        // const response = await axios.post("https://social-media-content-analyzer-2-w497.onrender.com/api/upload", formData, {
+        //     headers: { 'Content-Type': 'multipart/form-data' },
+        // });
+        const response = await axios.post("http://localhost:5000/api/upload", formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
         setExtractedText(response.data.extractedText);
