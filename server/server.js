@@ -11,7 +11,8 @@ const port = process.env.PORT || 5000;
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+//   origin: "http://localhost:5173",
+  origin: "https://post-analyzer.netlify.app/",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type"],
 };
