@@ -14,7 +14,8 @@ const corsOptions = {
 //   origin: "http://localhost:5173",
   origin: "https://post-analyzer.netlify.app/",
   methods: ["GET", "POST"],
-  allowedHeaders: ["Content-Type"],
+//   allowedHeaders: ["Content-Type"],
+    credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -70,8 +71,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
 
         const result = await model.generateContent(prompt);
         console.log('AI generateContent result:', result);
-        const response = await result.response;
-        const aiSuggest = response.text();
+        // const response = await result.response;
+        const aiSuggest = result.response.text();
         
         res.json({ 
             extractedText: text,
