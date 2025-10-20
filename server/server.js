@@ -73,6 +73,8 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
         console.log('AI generateContent result:', result);
         // const response = await result.response;
         const aiSuggest = result.response.text();
+
+        console.log('AI Suggestions:', aiSuggest); 
         
         res.json({ 
             extractedText: text,
